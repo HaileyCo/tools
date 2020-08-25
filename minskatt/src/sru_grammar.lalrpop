@@ -1,0 +1,96 @@
+// vim: ft=rust
+
+use crate::sru::{SRU, InfoContact, InfoHeader};
+use chrono::{DateTime, TimeZone, Utc};
+
+grammar;
+
+extern {
+    type Error = anyhow::Error;
+}
+
+pub SRU: SRU = {
+    <info: Info> => SRU::Info(info.0, info.1),
+    // <blanketter: Blanketter> => blanketter.build()?
+}
+
+
+Info: (InfoHeader, InfoContact) = {
+    <header: InfoHeader> <contact: InfoContact> => (header, contact),
+}
+
+InfoHeader: InfoHeader = {
+    "#DATABESKRIVNING_START"
+    "#PRODUKT SRU"
+    <media_id: ("#MEDIAID" String)?>
+    <created_at: ("#SKAPAD" DateTime)?>
+    <program: ("#PROGRAM" String*)?>
+    "#FILNAMN" <filename: String>
+    "#DATABESKRIVNING_SLUT" =>
+        InfoHeader {
+            product: "SRU".to_string(),
+            media_id: media_id.map(|(_, x)| x),
+            created_at: created_at.map(|(_, x)| x),
+            program: program.map(|(_, x)| x.join(" ")),
+            filename
+        },
+}
+
+InfoContact: InfoContact = {
+    "#MEDIELEV_START"
+    "#ORGNR" <organization_number: String>
+    "#NAMN" <name: String>
+    <address: ("#ADRESS" String*)?>
+    "#POSTNR" <zip_code: String>
+    "#POSTORT" <zip_area: String>
+    <department: ("#AVDELNING" String)?>
+    <contact_person: ("#KONTAKT" String*)?>
+    <email: ("#EMAIL" String)?>
+    <phone_number: ("#TELEFON" String)?>
+    <fax_number: ("#FAX" String)?>
+    "#MEDIELEV_SLUT" =>
+    InfoContact {
+        address: address.map(|(_, x)| x.join(" ")),
+        contact_person: contact_person.map(|(_, x)| x.join(" ")),
+        department: department.map(|(_, x)| x),
+        email: email.map(|(_, x)| x),
+        fax_number: fax_number.map(|(_, x)| x),
+        name,
+        organization_number: organization_number,
+        phone_number: phone_number.map(|(_, x)| x),
+        zip_area,
+        zip_code: zip_code.parse::<u32>().unwrap(),
+    }
+}
+
+DateTime: DateTime<Utc> = {
+    <date: Date> <time: Time> => {
+        Utc.ymd(date.0, date.1, date.2).and_hms(time.0,time.1,time.2)
+    }
+}
+
+Date: (i32, u32, u32) = {
+   <d: String> => {
+       let parts = d.to_string().clone();
+       let parts: Vec<_> = parts.split("").collect();
+       let year = parts[0..=4].join("").parse::<i32>().unwrap();
+       let month = parts[5..=6].join("").parse::<u32>().unwrap();
+       let day = parts[7..=8].join("").parse::<u32>().unwrap();
+       (year, month, day)
+   }
+}
+
+Time: (u32, u32, u32) = {
+   <t: String> => {
+       let parts = t.to_string().clone();
+       let parts: Vec<_> = parts.split("").collect();
+       let hour = parts[0..=2].join("").parse::<u32>().unwrap();
+       let minute = parts[3..=4].join("").parse::<u32>().unwrap();
+       let second = parts[5..=6].join("").parse::<u32>().unwrap();
+       (hour, minute, second)
+   }
+}
+
+String: String = {
+    <n: r"[a-zA-ZåöäÄÖÅ0-9][\.a-zA-ZåöäÄÖÅ@0-9_-]*"> => n.to_string()
+}

@@ -1,0 +1,21 @@
+[package]
+name = "minskatt"
+version = "0.0.1"
+publish = false
+license-file = "../LICENSE"
+authors = ["Leandro Ostera <leandro@ostera.io>"]
+edition = "2018"
+
+build = "build.rs"
+
+[dependencies]
+anyhow = "1.0"
+chrono = "0.4"
+fern = { version = "0.6", features = [ "colored" ] }
+lalrpop-util = "0.19"
+log = "0.4"
+regex = "1"
+structopt = "0.3"
+
+[build-dependencies]
+lalrpop = { version="0.19", features=["lexer"] }
