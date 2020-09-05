@@ -78,7 +78,11 @@ impl Goal {
 }
 
 #[derive(StructOpt, Debug, Clone)]
-#[structopt(name = "validate", about = "validate SRU file")]
+#[structopt(
+    name = "validate",
+    about = "validate SRU file",
+    help = "path to SRU file validate"
+)]
 struct ValidateOpt {
     #[structopt(default_value = "./INFO.SRU")]
     file: String,
