@@ -16,7 +16,7 @@ mod tests {
     use crate::sru_parser::*;
 
     #[test]
-    fn parse_symbol() {
+    fn parse_info() {
         let res = parse(
             r"#DATABESKRIVNING_START
 #PRODUKT SRU
