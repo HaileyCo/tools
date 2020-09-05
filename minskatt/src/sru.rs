@@ -136,6 +136,11 @@ pub struct Blankett {
     system_info: Option<String>,
 }
 
+/*
+ * NOTE: this field is a little wonky since it relies on the spreadsheets
+ * included in `/docs` to be validated. We'll have to figure how to automate
+ * this.
+ */
 #[derive(Debug, Clone)]
 pub struct BlankettField {
     field_code: u16,
