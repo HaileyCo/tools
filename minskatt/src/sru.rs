@@ -139,4 +139,5 @@ pub struct Blankett {
 #[derive(Debug, Clone)]
 pub struct BlankettField {
     field_code: u16,
+    field_value: String,
 }
