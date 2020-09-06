@@ -47,7 +47,6 @@ mod tests {
     #[test]
     fn parse_blanketter() {
         let res = parse(
-            // NOTE @malimnnnikk find a blanketter file to add as an example test here
             r"
 #BLANKETT N7-2020P1
 #IDENTITET 199704110100 20200911 123456
