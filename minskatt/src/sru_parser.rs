@@ -44,4 +44,24 @@ mod tests {
         assert_eq!(format!("{:?}", res),
             "Info(InfoHeader { product: \"SRU\", media_id: Some(\"DISK_12\"), created_at: Some(2013-04-28T17:45:57Z), program: Some(\"SRUDEKLARATION 1.4\"), filename: \"blanketter.sru\" }, InfoContact { address: Some(\"BOX 159\"), contact_person: Some(\"KARL KARLSSON\"), department: Some(\"Ekonomi\"), email: Some(\"kk@Databokföraren\"), fax_number: Some(\"08-1212121\"), name: \"Databokföraren\", organization_number: \"191111111111\", phone_number: Some(\"08-2121212\"), zip_area: \"SKATTSTAD\", zip_code: 12345 })");
     }
+    #[test]
+    fn parse_blanketter() {
+        let res = parse(
+            // NOTE @malimnnnikk find a blanketter file to add as an example test here
+            r"
+#BLANKETT N7-2020P1
+#IDENTITET 199704110100 20200911 123456
+#NAMN Malin Männikkö 
+#SYSTEMINFO markedasdone 20200908 
+#UPPGIFT 7011 010102019
+#UPPGIFT 7012 31122019
+#BLANKETTSLUT
+#FIL_SLUT
+        "
+            .to_string(),
+        )
+        .unwrap();
+        assert_eq!(format!("{:?}", res),
+            "Info(InfoHeader { product: \"SRU\", media_id: Some(\"DISK_12\"), created_at: Some(2013-04-28T17:45:57Z), program: Some(\"SRUDEKLARATION 1.4\"), filename: \"blanketter.sru\" }, InfoContact { address: Some(\"BOX 159\"), contact_person: Some(\"KARL KARLSSON\"), department: Some(\"Ekonomi\"), email: Some(\"kk@Databokföraren\"), fax_number: Some(\"08-1212121\"), name: \"Databokföraren\", organization_number: \"191111111111\", phone_number: Some(\"08-2121212\"), zip_area: \"SKATTSTAD\", zip_code: 12345 })");
+    }
 }
