@@ -115,7 +115,13 @@ impl Display for InfoContact {
 }
 
 #[derive(Debug, Clone)]
-pub struct Blankett {
+pub enum Blankett {
+    RawBlankett(RawBlankett),
+    ValidatedBlankett(ValidatedBlankett),
+}
+
+#[derive(Debug, Clone)]
+pub struct RawBlankett {
     // #BLANKETT
     document_id: String,
     document_appendix: Option<String>,
@@ -136,13 +142,41 @@ pub struct Blankett {
     system_info: Option<String>,
 }
 
-/*
- * NOTE: this field is a little wonky since it relies on the spreadsheets
- * included in `/docs` to be validated. We'll have to figure how to automate
- * this.
- */
+#[derive(Debug, Clone)]
+pub struct ValidatedBlankett {
+    // #BLANKETT
+    document_id: String,
+    document_appendix: Option<String>,
+    filing_year: u8,
+    filing_period: u8,
+
+    // #IDENTITET
+    organization_number: String,
+    created_at: DateTime<Utc>,
+
+    // #NAMN
+    name: String,
+
+    // #UPPGIFT
+    document: ValidDocument,
+
+    // #SYSTEMINFO
+    system_info: Option<String>,
+}
+
 #[derive(Debug, Clone)]
 pub struct BlankettField {
     field_code: u16,
     field_value: String,
+}
+
+#[derive(Debug, Clone)]
+pub enum ValidDocument {
+    INK3S(INK3S),
+}
+
+#[derive(Debug, Clone)]
+pub struct INK3S {
+    // 7299
+    total_income: u16,
 }
