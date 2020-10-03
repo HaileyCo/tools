@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc};
+use chrono::{Date, DateTime, Utc};
 use std::fmt::Display;
 use time::Time;
 
@@ -184,9 +184,9 @@ pub struct INK3S2019P4 {
     // INK3S = Skattemässiga justeringar Inkomstdeklaration 3
 
     // 7011 Räkenskapsårets början
-    fiscal_year_start_date: Option<DateTime<Utc>>,
+    fiscal_year_start_date: Option<Date<Utc>>,
     // 7012 Räkenskapsårets slut
-    fiscal_year_end_date: Option<DateTime<Utc>>,
+    fiscal_year_end_date: Option<Date<Utc>>,
     // 8686 7.1 Justerat resultat från föregående sida 6.21, vinst
     adjusted_result_from_previous_page_gains: Option<u32>,
 
@@ -249,7 +249,95 @@ pub struct INK3SU2019P4 {
     creation_date: DateTime<Utc>,
     //framtställningstid
     creation_time: Time,
-    //
+    //Fältkodsnummer
+    field_code: Option<u32>,
+    //Intern information för framställande program/system
+    system_info: Option<String>,
+    //korrekt organisationsummer
+    correct_org_number: String,
+
+    //Uppgiftslämnarens namn, no longer than 250 charachters
+    information_giver_name: Option<String>,
+
+    // 7011 räkenskapsårets början
+    fiscal_year_start_date: Option<Date<Utc>>,
+    // 7012 räkenskapsårets slut
+    fiscal_year_end_date: Option<Date<Utc>>,
+    // 8822 Föreningens/trossamfundets ändamål enligt stadarna - Idrott
+    purpose_athletics: bool,
+    //8828 Föreningens/trossamfundets ändamål enligt stadgarna - Kultur
+    purpose_culture: bool,
+    //8832 Föreningens/trossamfundets ändamål enligt stadgarna - Miljövård
+    purpose_environmentalcare: bool,
+    //8823 Föreningens/trossamfundets ändamål enligt stadgarna - Omsorg om barn och ungdom
+    purpose_care_for_children_and_youths: bool,
+    //8827 Föreningens/trossamfundets ändamål enligt stadgarna - Politisk verksamhet
+    purpose_political_activities: bool,
+    //8820 Föreningens/trossamfundets ändamål enligt stadgarna - Religiös verksamhet
+    purpose_religious_activities: bool,
+    // 8833 Föreningens/trossamfundets ändamål enligt stadgarna - Sjukvård
+    purpose_healthcare: bool,
+    // 8821 Föreningens/trossamfundets ändamål enligt stadgarna - social hjälpverksamhet
+    purpose_social_aid: bool,
+    // 8831 Föreningens/trossamfundets ändamål enligt stadgarna - Sveriges försvar och krisberedskap i samverkan med myndigheter
+    purpose_Swedens_defense_in_collaboration_with_other_government_entities: bool,
+    // 8829 Föreningens/trossamfundets ändamål enligt stadgarna - Utbildning
+    purpose_education: bool,
+    // 8830 Föreningens/trossamfundets ändamål enligt stadgarna - Vetenskaplig forskning
+    purpose_scientific_research: bool,
+    //8620 Föreningens/trossamfundets ändamål enligt stadgarna - annan likvärdig verksamhet, 36 charachter limit
+    purpose_other_equvivalent: Option<String>,
+    // 8614 Föreningar/trossamfund: hur stor del av fastighetens yta som hyrs ut, ange procenttal
+    NGO_how_much_of_the_property_is_rented_percentage: Option<u32>,
+    // 8615 Föreningar/trossamfund: hur stor del av fastigheten hyrs ut, ange i kvm
+    NGO_how_much_of_the_property_is_rented_sqm: Option<u32>,
+    // 8640 4.1 Föreningar/trossamfund: intäkter: medlemsavgifter
+    NGO_income_membershipfees: Option<u32>,
+    // 8641 4.2 Föreningar/trossamfund: intäkter : bidrag gåvor
+    NGO_income_gifts_donations: Option<u32>,
+    // 8642 4.3 Föreningar/trossamfund: intäkter : räntor, utdelningar
+    NGO_income_interests_dividends: Option<u32>,
+    // 8643 4.4 Föreningar/trossamfund: inktäkter: vinst vid försällning av fastigheter, värdepapper m-m
+    NGO_income_profit_on_sale_of_property_securities_etc: Option<u32>,
+    // 8629 4.5 Föreningar/trossamfund_ inktäkter: rörelseintäkter
+    NGO_income_operational: Option<u32>,
+    // 8644 4.6 Föreningar/trossamfund: intäkter: fastighetsintäkter
+    NGO_income_property: Option<u32>,
+    //8713 4.7 Föreningar/trossamfund: kostnader: utdelade bidrag, stipendier
+    NGO_costs_membership_operations: Option<u32>,
+    // 8714 4.8 Föreningar/trossamfund: kostnader: utdelade bidrag, stipendier
+    NGO_costs_distributed_donations_grants: Option<u32>,
+    // 8715 4.9 föreningar/trossamfund:kostnader: räntor och kapitalförvaltning
+    NGO_costs_interestrates_capital_management: Option<u32>,
+    // 8716 4.10 Föreningar trossamfund: kostnader: förlust vid försäljning av fastigheter, värdepapper m.ma
+    NGO_costs_loss_when_selling_property: Option<u32>,
+    // 8717 4.11 Föreningar/trossamfund: kostnader: rörelsekostnader
+    NGO_costs_operational: Option<u32>,
+    //8718 föreningar/trossamfund: kostnader : fastighetskostnader
+    NGO_costs_propertycosts: Option<u32>,
+
+    //Stiftelser
+    //8840 Stiftelsens ändamål enligt stadgarna - annan likvärdig verksamhet, 36 charachter limit
+    purpose_of_the_foundation_other_equvivalent_operation: Option<String>,
+    //8850 3.1 Beslutad utdelning av bidrag/stipendier enligt ändamål
+    decided_dividend_of_grants_according_to_purposes: Option<u32>,
+    // 8857 3.2 Bidrag och gåvor
+    contributions_gifts: Option<u32>,
+    //8858 3.3 Kostnader för att erhålla bidrag och gåvor (insamlingskostnader)
+    costs_for_recieving_contributions_collection_costs: Option<u32>,
+
+    //8851 3.4 Kapitalavkastning
+    return_on_capital: Option<u32>,
+    //8852 3.5 Kapitalförvaltningskostnader
+    asset_management_costs: Option<u32>,
+    // 8853 3.6 Kostnader för att fullfölja stiftelsens ändamål
+    costs_for_fullfilling_the_purpose_of_the_foundation: Option<u32>,
+    //8854 3.7 Beslutad utdelning enligt p. 3.1 som jör till föregående års kapitalavkastning
+    decided_divident_according_to_p_3_that_belongs_to_the_previous_years_capital_return: bool,
+    // 8855 3.8 Uppgifter för verksamhetsstiftelser - intäkter
+    information_for_operational_founds_income: Option<u32>,
+    // 8856 3.9 Uppgifter för verksamhetsstiftelser - kostnader
+    information_for_operational_founds_costs: Option<u32>,
 }
 
 
