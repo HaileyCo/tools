@@ -11,6 +11,7 @@ build = "build.rs"
 [dependencies]
 anyhow = "1.0"
 chrono = "0.4"
+time = "0.2.22"
 fern = { version = "0.6", features = [ "colored" ] }
 lalrpop-util = "0.19"
 log = "0.4"
