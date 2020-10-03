@@ -17,6 +17,10 @@ lalrpop-util = "0.19"
 log = "0.4"
 regex = "1"
 structopt = "0.3"
+wasm-bindgen = "0.2"
 
 [build-dependencies]
 lalrpop = { version="0.19", features=["lexer"] }
+
+[lib]
+crate-type = ["cdylib", "rlib"]
